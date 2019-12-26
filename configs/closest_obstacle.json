@@ -1,0 +1,49 @@
+{
+    "competition" : "obstacles",
+    "detectors":
+        [
+        {
+        "name" : "obstacle detector",
+        "filters": [
+                {
+                    "name": "colorspace2colorspace",
+                    "long_name": "colorspace2colorspace",
+                    "from" : "YCrCb",
+                    "to"   : "RGB"
+                },
+
+                {
+                    "name": "colorspace2colorspace",
+                    "long_name": "colorspace2colorspace",
+                    "from" : "RGB",
+                    "to"   : "HSV"
+                },
+                {
+                "name": "find_obstacles_distances",
+                "long_name" : "find_obstacles_distances",
+                "types_num" : "2",
+                "1l1" : "108",
+                "1l2" : "140",
+                "1l3" : "71",
+                "1h1" : "124",
+                "1h2" : "210",
+                "1h3" : "208",
+                "2l1" : "0",
+                "2l2" : "5",
+                "2l3" : "153",
+                "2h1" : "50",
+                "2h2" : "255",
+                "2h3" : "230",
+                "area_low":  "-1",
+                "area_high": "-1",
+                "hei_low":   "-1",
+                "hei_high":  "-1",
+                "wid_low":   "-1",
+                "wid_high":  "-1",
+                "den_low":   "-1",
+                "den_high":  "-1"
+                }
+    ]
+    }
+    ]
+}

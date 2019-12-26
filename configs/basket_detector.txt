@@ -1,0 +1,32 @@
+{   "competition" : "basketball",
+    "filters": [
+        {
+            "name": "inrange",
+            "long_name": "in range",
+            "l1": "100",
+            "l2": "40",
+            "l3": "20",
+            "h1": "130",
+            "h2": "150",
+            "h3": "150"
+        },
+
+        {
+            "name": "filter_connected_components",
+            "long_name": "filter connected components",
+            "area_low":  "20",
+            "area_high": "100",
+            "hei_low":   "-1",
+            "hei_high":  "-1",
+            "wid_low":   "-1",
+            "wid_high":  "-1",
+            "den_low":   "-1",
+            "den_high":  "-1"
+        },
+        
+        {
+            "name": "max_area_cc_bbox",
+            "long_name": "maximal area connected component bounding box extraction"
+        }
+    ]
+}
