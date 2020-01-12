@@ -2,7 +2,7 @@
 {   
     "competition" : "basketball",
     
-    "detectors":
+    "processors":
         [
         {
         "name": "ball detector",
