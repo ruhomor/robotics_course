@@ -51,6 +51,15 @@ class Filter:
     def apply (self, img):
         return img
 
+class custom_operation (Filter):
+    def __init__ (self, operation_, operation_name_):
+        Filter.__init__ (self, operation_name_)
+
+        self.operation = operation_
+
+    def apply (self, img):
+        return self.operation (img)
+
 class morphology (Filter):
     operations = {}
 
@@ -91,7 +100,7 @@ class gamma_correction (Filter):
         self.gamma = new_gamma
 
     def apply (self, img):
-
+        #print ("kek", img)
         inv_gamma = 1.0 / self.gamma
 
         table = np.array([((i / 255.0) ** inv_gamma) * 255
@@ -108,7 +117,7 @@ class resize (Filter):
         self.new_y = new_y_
         
     def apply (self, img):
-        #TODO: implement scale factor application
+        #TODO: implement fitting into the given shape
 
         sh = img.shape
 
@@ -432,18 +441,17 @@ class Processors:
     def get_stages_picts (self, processor_name):
         stages_picts = []
 
-        #TODO: rewrite in accordance with new filters organization (OrderedDict)
         for i in range (len (self.stages [processor_name])):
-            filter_type = self.processors [processor_name] [i - 1] [1]
-            #print ("fffuuu")
-            #print (self.processors [processor_name] [i - 1])
+            if (i == 0):
+                stages_picts.append (self.stages [processor_name] [i])
+                continue
+
+            filter_usr_name = list (self.processors [processor_name].keys ()) [i - 1]
+            filter_type = self.processors [processor_name] [filter_usr_name].name
 
             stage = self.stages [processor_name] [i]
 
-            if (i == 0):
-                stages_picts.append (self.stages [processor_name] [i])
-
-            elif (filter_type == "max_area_cc_bbox"):
+            if (filter_type == "max_area_cc_bbox"):
                 prev_img = self.stages [processor_name] [0].copy ()
 
                 rect_marked = cv2.rectangle (prev_img, stage [0], stage [1], (100, 200, 10), 5)
