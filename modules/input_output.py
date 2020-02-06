@@ -2,6 +2,7 @@ import cv2
 from pathlib import Path
 import math
 import numpy as np
+import os
 
 def get_available_cameras (upper_bound = 10, lower_bound = 0):
     available = []
@@ -51,9 +52,9 @@ class Source:
         self.path = path_
         
         if (type_ == ""):
-            if (self.path.endswith ("jpg") or
-                self.path.endswith ("png") or
-                self.path.endswith ("bmp")):
+            if (self.path.endswith (".jpg") or
+                self.path.endswith (".png") or
+                self.path.endswith (".bmp")):
                 self.type = "photo"
 
             elif (self.path.endswith (".webm") or
@@ -115,6 +116,8 @@ class Source:
 
     def init_photo (self):
         self.img = cv2.imread (self.path)
+        if self.img is None:
+            print("Failed to load img{}".format(self.path))
 
     def init_photo_series (self):
         self.file_num = 0
