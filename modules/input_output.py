@@ -181,6 +181,10 @@ class Source:
     def get_frame_photo (self):
         return self.img.copy ()
 
+    def release_camera (self):
+        if (self.type == "camera"):
+            self.camera.release ()
+
 #output (stream to video file)
 
 #generalize to the desired a by b cells grid (?)
