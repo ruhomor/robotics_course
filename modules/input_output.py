@@ -181,7 +181,7 @@ class Source:
     def get_frame_photo (self):
         return self.img.copy ()
 
-    def release_camera (self):
+    def release (self):
         if (self.type == "camera"):
             self.camera.release ()
 
