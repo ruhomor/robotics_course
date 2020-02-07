@@ -7,6 +7,12 @@ import cv2
 import json
 import numpy as np
 import collections
+import matplotlib
+matplotlib.use('Agg') 
+import matplotlib.pyplot as plt
+#from matplotlib.figure import Figure
+plt.switch_backend('Agg')
+
 
 #TODO: Implement simultaneous stages displaying in single window
 #TODO: Document the logics behind the project architecture, filters creation
@@ -329,6 +335,18 @@ class find_obstacles_distances (Filter):
         return result, labels
 
 
+class calc_distribution(Filter):
+    def __init__(self):
+        Filter.__init__ (self, "calc_distribution")
+
+    def apply(self, img):
+        first_channel = cv2.calcHist([img[:,:,0]],[0],None,[256],[0,256])
+        second_channel = cv2.calcHist([img[:,:,1]],[0],None,[256],[0,256])
+        third_channel = cv2.calcHist([img[:,:,2]],[0],None,[256],[0,256])
+        return (first_channel, second_channel, third_channel)
+
+
+
 #------------------------------------------------------
 
 #Detector incapsulates the whole detection process, which practically means image processing
@@ -479,6 +497,18 @@ class Processors:
                     rect_marked = cv2.circle (prev_img, (x, y), 5, (10 + type * 50, 150 - type * 90, 190 + type * 140), thickness = -1)
 
                 stages_picts.append (rect_marked)
+            
+            elif (filter_type == "calc_distribution"):
+                #prev_img = self.stages[processor_name][0].copy()
+                hists = self.stages[processor_name][i]
+                fig, axs = plt.subplots(len(hists), 1)
+                for i, (hist, ax) in enumerate(zip(hists, axs)):
+                    ax.plot(hist)
+                    ax.set_title(str(i+1) + " channel")
+                fig.canvas.draw()
+                X = np.array(fig.canvas.renderer.buffer_rgba())
+                plt.close('all')
+                stages_picts.append(X)
 
             else:
                 stages_picts.append (stage)
