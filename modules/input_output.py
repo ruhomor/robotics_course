@@ -190,46 +190,52 @@ class Source:
 #generalize to the desired a by b cells grid (?)
 #generalize to the desired acpect ratio (?)
 
-def form_grid (images_, window_x_sz = -1, one_img_x_sz = -1, square_like = True):
+def form_grid (images_, window_x_sz = -1, one_img_x_sz = -1):
     images = []
+    forms = {
+        1 : [1, 1, 0], #(number of images x, number of images y, number of empty images)
+        2 : [2, 1, 0],
+        3 : [3, 1, 0],
+        4 : [2, 2, 0],
+        5 : [3, 2, 1],
+        6 : [3, 2, 0],
+        7 : [4, 2, 1],
+        8 : [4, 2, 0],
+        9 : [3, 3, 0],
+        10 : [4, 3, 2],
+        11 : [4, 3, 1],
+        12 : [4, 3, 0]
+    }
+    if len(images) <= 12:
+        form = forms[len(images_)]
+    else:
+        print("Can process only 12 images")
+        return 0
 
-    sh = images_ [0].shape
-    scaling = 4
-
-    szx = int (sh [0] / scaling)
-    szy = int (sh [1] / scaling)
-
-    for img_ in images_:
-        img = cv2.resize (img_, (szx, szy))
-        images.append (img)
-
-    if (square_like == True):
-        images_num = len (images)
-        row_len = math.ceil (math.sqrt (images_num))
-        print ("row len", row_len)
-
-        #form rows
-        rows = []
-
-        for i in range (row_len):
-            #new_row_ = images [i * row_len : min (i * row_len + row_len, images_num)]]
-
-            print ("len", len (new_row_))
-
-            if (len (new_row_) != row_len):
-                while (len (new_row_) != row_len):
-                    new_row_.append (new_row_ [-1])
-
-            new_row = np.concatenate (tuple (new_row_), axis = 0)
-
-            rows.append (new_row)
-
-        for row in rows:
-            print (row.shape)
-
-        result = np.concatenate (tuple (rows), axis = 1)
-
-    return result
+    shape = images_[0].shape
+    if one_img_x_sz != -1:
+        rescale_factor = one_img_x_sz/shape[1]
+        shape = [int(x*rescale_factor) for x in shape]
+        
+    if window_x_sz != -1:
+        rescale_factor = window_x_sz/shape[1]/form[0]
+        shape = [int(x*rescale_factor) for x in shape]
+        
+    for img in images_:
+        img = cv2.resize(img, (shape[1], shape[0]))
+        if len(img.shape) == 2: #gray_scale
+            img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+        if img.shape[2] == 4: #rgba
+            img = img[:, :, :3]
+        images.append(img)
+   
+    for j in range(form[2]):
+        images.append(np.zeros_like(images[0]))
+        
+    rows = []
+    for i in range(form[1]):
+        rows.append(np.concatenate(images[i*form[1]:(i+1)*form[0]], axis = 1))
+    return np.concatenate(rows) 
 
 
 
