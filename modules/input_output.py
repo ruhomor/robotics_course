@@ -228,13 +228,13 @@ def form_grid (images_, window_x_sz = -1, one_img_x_sz = -1):
         if img.shape[2] == 4: #rgba
             img = img[:, :, :3]
         images.append(img)
-   
+
     for j in range(form[2]):
         images.append(np.zeros_like(images[0]))
         
     rows = []
     for i in range(form[1]):
-        rows.append(np.concatenate(images[i*form[1]:(i+1)*form[0]], axis = 1))
+        rows.append(np.concatenate(images[i*form[0]:(i+1)*form[0]], axis = 1))
     return np.concatenate(rows) 
 
 
