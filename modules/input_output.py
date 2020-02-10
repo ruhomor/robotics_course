@@ -220,8 +220,17 @@ def form_grid (images_, window_x_sz = -1, one_img_x_sz = -1):
     if window_x_sz != -1:
         rescale_factor = window_x_sz/shape[1]/form[0]
         shape = [int(x*rescale_factor) for x in shape]
-        
+
+    #print ("len", len (images_))
+
+    #print ("0", images_ [0].shape)
+    #print ("1", images_ [1].shape)
+    #print ("2", images_ [2].shape)
+    #print ("3", images_ [3].shape)
+
     for img in images_:
+        print ("before resize", img.shape)
+
         img = cv2.resize(img, (shape[1], shape[0]))
         if len(img.shape) == 2: #gray_scale
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)

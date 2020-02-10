@@ -502,11 +502,16 @@ class Processors:
                 #prev_img = self.stages[processor_name][0].copy()
                 hists = self.stages[processor_name][i]
                 fig, axs = plt.subplots(len(hists), 1)
-                for i, (hist, ax) in enumerate(zip(hists, axs)):
+                for j, (hist, ax) in enumerate(zip(hists, axs)):
                     ax.plot(hist)
-                    ax.set_title(str(i+1) + " channel")
-                fig.canvas.draw()
-                X = np.array(fig.canvas.renderer.buffer_rgba())
+                    ax.set_title(str(j+1) + " channel")
+                #fig.canvas.draw()
+                plt.savefig("temp.jpg")
+                X = plt.imread ("temp.jpg")
+                #print ("fig canvas", fig.canvas.renderer.buffer_rgba().shape)
+                #X = np.frombuffer(fig.canvas.renderer.buffer_rgba(), dtype=np.uint8)
+                #X = np.reshape (X, (800, 512, 3))
+                print ("arr shape", X.shape)
                 plt.close('all')
                 stages_picts.append(X)
 
