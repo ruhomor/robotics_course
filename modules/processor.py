@@ -93,6 +93,26 @@ class GaussianBlur (Filter):
     def apply (self, img):
         return cv2.GaussianBlur (img, (ker_sz, kre_sz), 0)
 
+class crop (Filter):
+    def __init__ (self, x1 = 0, y1 = 0, x2 = 100, y2 = 100):
+        Filter.__init__ (self, "crop")
+
+        self.parameters = {"x1" : x1,
+                           "y1" : y1,
+                           "x2" : x2,
+                           "y2" : y2,
+                           }
+        
+    def set_parameter (self, parameter, new_value):
+        if (parameter not in self.parameters.keys ()):
+            print ("Warning: no such parameter ", parameter, "adding")
+
+        self.parameters.update ({parameter, new_value})
+
+    def apply (self, img):
+        return img [self.parameters ["x1"] : self.parameters ["x2"],
+                    self.parameters ["y1"] : self.parameters ["y2"], :].copy ()
+
 class gamma_correction (Filter):
     def __init__ (self, gamma_ = 1):
         Filter.__init__ (self, "gamma correction")
@@ -473,6 +493,17 @@ class Processors:
                 prev_img = self.stages [processor_name] [0].copy ()
 
                 rect_marked = cv2.rectangle (prev_img, stage [0], stage [1], (100, 200, 10), 5)
+                stages_picts.append (rect_marked)
+
+            if (filter_type == "crop"):
+                prev_img = self.stages [processor_name] [i - 1].copy ()
+
+                x1 = self.processors [processor_name] [filter_usr_name].parameters ["x1"]
+                y1 = self.processors [processor_name] [filter_usr_name].parameters ["y1"]
+                x2 = self.processors [processor_name] [filter_usr_name].parameters ["x2"]
+                y2 = self.processors [processor_name] [filter_usr_name].parameters ["y2"]
+
+                rect_marked = cv2.rectangle (prev_img, (x1, y1), (x2, y2), (100, 200, 10), 5)
                 stages_picts.append (rect_marked)
 
             elif (filter_type == "find_obstacles_distances"):
