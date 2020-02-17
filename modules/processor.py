@@ -542,7 +542,7 @@ class Processors:
                 #print ("fig canvas", fig.canvas.renderer.buffer_rgba().shape)
                 #X = np.frombuffer(fig.canvas.renderer.buffer_rgba(), dtype=np.uint8)
                 #X = np.reshape (X, (800, 512, 3))
-                print ("arr shape", X.shape)
+                #print ("arr shape", X.shape)
                 plt.close('all')
                 stages_picts.append(X)
 
