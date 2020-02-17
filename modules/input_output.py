@@ -229,7 +229,7 @@ def form_grid (images_, window_x_sz = -1, one_img_x_sz = -1):
     #print ("3", images_ [3].shape)
 
     for img in images_:
-        print ("before resize", img.shape)
+        #print ("before resize", img.shape)
 
         img = cv2.resize(img, (shape[1], shape[0]))
         if len(img.shape) == 2: #gray_scale
