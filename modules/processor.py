@@ -487,6 +487,8 @@ class Processors:
             filter_usr_name = list (self.processors [processor_name].keys ()) [i - 1]
             filter_type = self.processors [processor_name] [filter_usr_name].name
 
+            #print ("filter type", filter_type)
+
             stage = self.stages [processor_name] [i]
 
             if (filter_type == "max_area_cc_bbox"):
@@ -495,7 +497,7 @@ class Processors:
                 rect_marked = cv2.rectangle (prev_img, stage [0], stage [1], (100, 200, 10), 5)
                 stages_picts.append (rect_marked)
 
-            if (filter_type == "crop"):
+            elif (filter_type == "crop"):
                 prev_img = self.stages [processor_name] [i - 1].copy ()
 
                 x1 = self.processors [processor_name] [filter_usr_name].parameters ["x1"]
